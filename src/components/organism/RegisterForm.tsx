@@ -1,8 +1,6 @@
-import { signInWithPopup } from 'firebase/auth';
 import React, { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { auth, googleProvider } from '../../firebase';
 import Button from '../atoms/Button';
 import Form from '../molecules/Form';
 import '../../styles/RegisterForm.css';
@@ -101,35 +99,7 @@ const RegisterForm = () => {
     }
   };
 
-  //Google Sign-In registration
-  const handleGoogleRegister = async () => {
-    try {
-      // popup for signin
-      const result = await signInWithPopup(auth, googleProvider);
-      const user = result.user;
-
-      const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
-
-      const userExists = existingUsers.some(
-        (u: RegisterProps) => u.email === user.email
-      );
-
-      // If not, save Google user info to localStorage
-      if (!userExists) {
-        const newUser = {
-          name: user.displayName || '',
-          email: user.email || '',
-          password: '', 
-        };
-        localStorage.setItem('users', JSON.stringify([...existingUsers, newUser]));
-      }
-
-      //to login after successful registration
-      navigate('/login');
-    } catch (error) {
-      console.error('Google sign-in error:', error);
-    }
-  };
+  
 
   return (
     <div className="register">
@@ -183,9 +153,6 @@ const RegisterForm = () => {
         </form>
 
         <div className="or">or</div>
-
-        {/* Google Sign-in button */}
-        <Button label="Register with Google" onClick={handleGoogleRegister} />
       </div>
     </div>
   );

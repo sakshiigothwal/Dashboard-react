@@ -1,8 +1,6 @@
-import { signInWithPopup } from 'firebase/auth';
 import React, { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { auth, googleProvider } from '../../firebase';
 import Button from '../atoms/Button';
 import Form from '../molecules/Form';
 
@@ -88,41 +86,7 @@ const LogIn = () => {
       }
     }
   };
-  const handleGoogleLogin = async () => {
-    try {
-      //sign in with Google popup
-      const result = await signInWithPopup(auth, googleProvider);
-      const user = result.user;
-
-      const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
-
-      //if user already exists in local storage
-      const userExists = existingUsers.some(
-        (u: { email: string }) => u.email === user.email,
-      );
-
-      if (!userExists) {
-        //new google user
-        const newUser = {
-          name: user.displayName || '',
-          email: user.email || '',
-          password: '', 
-        };
-        localStorage.setItem('users', JSON.stringify([...existingUsers, newUser]));
-      }
-
-      
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem(
-        'currentUser',
-        JSON.stringify({ name: user.displayName, email: user.email }),
-      );
-      navigate('/');
-    } catch (error) {
-      console.error('Google login failed:', error);
-    }
-  };
-
+  
   return (
     <div className="login">
       <div className="loginbox">
@@ -152,9 +116,6 @@ const LogIn = () => {
           <Button label="login" type="submit" onClick={() => {}} />
         </form>
         <div className="or">or</div>
-
-        {/* Google Sign-In button */}
-        <Button label="Login with Google" onClick={handleGoogleLogin} />
       </div>
     </div>
   );
