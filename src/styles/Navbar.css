@@ -1,0 +1,39 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 16px;          
+  background-color: #2E236C;
+  border-bottom: 1px solid #fff;
+  height: 50px;                
+  box-sizing: border-box;
+}
+
+.header {
+  font-size: 20px;           
+  font-weight: 600;
+  margin-right: auto;
+  color: white;
+}
+
+.navbar input[type="text"] {
+  padding: 4px 8px;          
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  height: 30px;
+  margin-left: 20px;
+}
+
+.search {
+  height: 20px;
+  cursor: pointer;
+  margin-left: 10px;
+  width: 16px;
+}
+
+.navbar button {
+  margin-left: 10px;
+  padding: 4px 10px;          
+  font-size: 14px;
+}
