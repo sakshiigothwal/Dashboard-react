@@ -1,6 +1,8 @@
+import { signInWithPopup } from 'firebase/auth';
 import React, { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { auth, provider } from '../../firebase';
 import Button from '../atoms/Button';
 import Form from '../molecules/Form';
 import '../../styles/RegisterForm.css';
@@ -66,6 +68,32 @@ const RegisterForm = () => {
     setError(newError);
     return isValid;
   };
+
+  //handle google signIn
+  const handleGoogleSignIn = async () => {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+
+    const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
+    const userExists = existingUsers.some(
+      (u: RegisterProps) => u.email === user.email
+    );
+
+    if (!userExists) {
+      const newUser = {
+        name: user.displayName || '',
+        email: user.email || '',
+        password: '',
+      };
+      localStorage.setItem('users', JSON.stringify([...existingUsers, newUser]));
+    }
+
+    navigate('/login'); 
+  } catch (error) {
+    console.error('Google sign-in error:', error);
+  }
+};
 
   // form based registration
   const handleSubmit = (e: FormEvent) => {
@@ -153,6 +181,9 @@ const RegisterForm = () => {
         </form>
 
         <div className="or">or</div>
+        {/* Sign in with google button */}
+        <Button label="Continue with Google" type="button" onClick={handleGoogleSignIn} />
+
       </div>
     </div>
   );
