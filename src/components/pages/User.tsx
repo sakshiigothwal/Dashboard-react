@@ -18,12 +18,29 @@ const User = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState<UserProps[]>([]);
 
-  useEffect(() => {
-    //fetch users from API
-    axios.get('https://jsonplaceholder.typicode.com/users')
+  const fetchUsers = () => {
+    axios.get('https://685b7af589952852c2d9ab22.mockapi.io/api/users')
       .then((res) => setUsers(res.data))
       .catch((err) => console.error(err));
+  };
+
+  useEffect(() => {
+    //fetch users from API
+    fetchUsers()
   }, []);
+
+  const handleDelete = async (id: string) => {
+    try {
+      await axios.delete(`${'https://685b7af589952852c2d9ab22.mockapi.io/api/users'}/${id}`);
+      fetchUsers(); // refresh list
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
+  };
+
+  const handleEdit = (user: UserProps) => {
+    navigate(`/edit-user/${user.id}`, { state: user });
+  };
 
   return (
     <div className='user'>
@@ -40,16 +57,22 @@ const User = () => {
               <th>Sr. no.</th>
               <th>Name</th>
               <th>Email</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {users.map((props: UserProps, index: number) => (
               //displays user name email
-              <tr>
+              <tr key={props.id}>
                 <td>{index + 1}</td>
                 <td>{props.name}</td>
                 <td>{props.email}</td>
+                <td className='buttons'>
+                  <Button label="Edit" onClick={() => handleEdit(props)} />
+                  <Button label="Delete" onClick={() => handleDelete(props.id.toString())} />
+                </td>
               </tr>
+              
             ))}
           </tbody>
         </table>

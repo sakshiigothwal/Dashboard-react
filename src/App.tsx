@@ -6,6 +6,7 @@ import './App.css';
 import AddUser from './components/pages/AddUser';
 import BlogDetails from './components/pages/BlogDetails';
 import BlogList from './components/pages/BlogList';
+import EditUser from './components/pages/EditUser';
 import HomePage from './components/pages/HomePage';
 import LogInPage from './components/pages/LogInPage';
 import Register from './components/pages/Register';
@@ -55,6 +56,10 @@ function App() {
           <Route
             path="/add-user"
             element={isLoggedIn ? <AddUser /> : <LogInPage />}
+          />
+          <Route
+            path="/edit-user/:id"
+            element={isLoggedIn ? <EditUser /> : <LogInPage />}
           />
         </Routes>
         <Footer />

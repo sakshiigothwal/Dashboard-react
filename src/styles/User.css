@@ -49,3 +49,22 @@
 .adduser button:hover {
   background-color: #2E236C;
 }
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.buttons button {
+  background-color: #4a4a8a; 
+  color: white;
+  border: none;
+  padding: 3px 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.buttons button:hover {
+  background-color: #2E236C;
+}
