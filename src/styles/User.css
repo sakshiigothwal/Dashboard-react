@@ -36,7 +36,7 @@
 .user tr:nth-child(even) {
   background-color: #f4f4f4;
 }
-.adduser button{
+.adduserbtn button{
   background-color: #17153B;
   color: white;
   border: none;
@@ -46,7 +46,7 @@
   border-radius: 4px;
 }
 
-.adduser button:hover {
+.adduserbtn button:hover {
   background-color: #2E236C;
 }
 

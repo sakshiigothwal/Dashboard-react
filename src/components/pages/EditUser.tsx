@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useRef, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-
+import '../../styles/EditUser.css';
 import Sidebar from '../molecules/Sidebar';
 
 const EditUser = () => {
@@ -12,8 +12,8 @@ const EditUser = () => {
 
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
-    const [message, setMessage] = useState('');
-    const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (nameRef.current) nameRef.current.value = name;
@@ -23,15 +23,25 @@ const EditUser = () => {
   const handleUpdate = async () => {
     const updatedName = nameRef.current?.value;
     const updatedEmail = emailRef.current?.value;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (updatedName && updatedEmail) {
+      if (!emailRegex.test(updatedEmail)) {
+        setError('Invalid email.');
+        setMessage('');
+        return;
+      }
       try {
-        await axios.put(`https://685b7af589952852c2d9ab22.mockapi.io/api/users/${id}`, {
-          name: updatedName,
-          email: updatedEmail
-        });
+        await axios.put(
+          `https://685b7af589952852c2d9ab22.mockapi.io/api/users/${id}`,
+          {
+            name: updatedName,
+            email: updatedEmail,
+          },
+        );
         setMessage('User updated successfully!');
-        setTimeout(()=>navigate('/users'), 1000);
+        setError(' ')
+        setTimeout(() => navigate('/users'), 1000);
       } catch (error) {
         console.error('Error updating user:', error);
         setError('error in updating user');
@@ -44,12 +54,14 @@ const EditUser = () => {
     <div>
       <Sidebar />
       <h2>Edit User</h2>
-      <input ref={nameRef} placeholder="Name" />
-      <input ref={emailRef} placeholder="Email" />
-      <button onClick={handleUpdate}>Update</button>
+      <div className="edituser">
+        <input ref={nameRef} placeholder="Name" />
+        <input ref={emailRef} placeholder="Email" />
+        <button onClick={handleUpdate}>Update</button>
 
-      {message && <p className="success-message">{message}</p>}
-      {error && <p className="error-message">{error}</p>}
+        {message && <p className="success-message">{message}</p>}
+        {error && <p className="error-message">{error}</p>}
+      </div>
     </div>
   );
 };

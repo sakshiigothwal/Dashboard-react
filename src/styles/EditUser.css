@@ -1,7 +1,7 @@
 *{
   box-sizing: border-box;
 }
-.adduser {
+.edituser {
   max-width: 400px;
   margin: 2rem auto;
   padding: 2rem;
@@ -10,7 +10,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.adduser input {
+.edituser input {
   width: 100%;
   padding: 10px 14px;
   margin-bottom: 1rem;
@@ -20,12 +20,12 @@
   outline: none;
 }
 
-.adduser input:focus {
+.edituser input:focus {
   border-color: #6c63ff;
   box-shadow: 0 0 4px rgba(108, 99, 255, 0.5);
 }
 
-.adduser button {
+.edituser button {
   width: 100%;
   padding: 10px 14px;
   background-color: #4a4a8a;
@@ -38,7 +38,7 @@
   transition: background-color 0.3s;
 }
 
-.adduser button:hover {
+.edituser button:hover {
   background-color: #2E236C;
 }
 

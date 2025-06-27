@@ -2,7 +2,7 @@ import { signInWithPopup } from 'firebase/auth';
 import React, { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { auth, provider } from '../../firebase'; 
+import { auth, provider } from '../../firebase';
 import Button from '../atoms/Button';
 import Form from '../molecules/Form';
 
@@ -24,6 +24,9 @@ const LogIn = () => {
     email: '',
     password: '',
   });
+
+  const [success, setSuccess] = useState('');
+  const [info, setInfo] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -74,9 +77,13 @@ const LogIn = () => {
 
         if (matchUser) {
           // if matches update login status
+          setSuccess('Login successful!');
+          setInfo('');
+
           localStorage.setItem('isLoggedIn', 'true');
           localStorage.setItem('currentUser', JSON.stringify(matchUser));
-          navigate('/');
+
+          setTimeout(() => navigate('/'), 1000);
         } else {
           //gives error message if user not matched
           setError((prev) => ({
@@ -84,39 +91,47 @@ const LogIn = () => {
             email: 'Invalid email or password',
             password: 'Invalid email or password',
           }));
+          setInfo('No account found, please register');
+          setSuccess('');
         }
       }
     }
   };
   //handle google login
   const handleGoogleLogin = async () => {
-  try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
 
-    const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
-    const matchUser = existingUsers.find(
-      (u: LoginProps) => u.email.toLowerCase() === (user.email || '').toLowerCase()
-    );
+      const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
+      const matchUser = existingUsers.find(
+        (u: LoginProps) =>
+          u.email.toLowerCase() === (user.email || '').toLowerCase(),
+      );
 
-    if (!matchUser) {
-      // if new Google user
-      const newUser = {
-        email: user.email || '',
-        password: '', 
-      };
-      localStorage.setItem('users', JSON.stringify([...existingUsers, newUser]));
+      if (!matchUser) {
+        // if new Google user
+        const newUser = {
+          email: user.email || '',
+          password: '',
+        };
+        localStorage.setItem(
+          'users',
+          JSON.stringify([...existingUsers, newUser]),
+        );
+      }
+
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem(
+        'currentUser',
+        JSON.stringify({ email: user.email }),
+      );
+      navigate('/');
+    } catch (error) {
+      console.error('Google login failed', error);
     }
+  };
 
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('currentUser', JSON.stringify({ email: user.email }));
-    navigate('/');
-  } catch (error) {
-    console.error('Google login failed', error);
-  }
-};
-
-  
   return (
     <div className="login">
       <div className="loginbox">
@@ -146,8 +161,13 @@ const LogIn = () => {
           <Button label="login" type="submit" onClick={() => {}} />
         </form>
         <div className="or">or</div>
-        <Button label="Continue with Google" type="button" onClick={handleGoogleLogin} />
-
+        <Button
+          label="Continue with Google"
+          type="button"
+          onClick={handleGoogleLogin}
+        />
+        {success && <p className="success">{success}</p>}
+        {info && <p className="info">{info}</p>}
       </div>
     </div>
   );

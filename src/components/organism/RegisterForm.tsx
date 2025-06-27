@@ -26,6 +26,7 @@ const RegisterForm = () => {
     password: '',
     confirmPassword: '',
   });
+  const [success, setSuccess] = useState('');
 
   // handle input change and clear related error message
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,29 +72,32 @@ const RegisterForm = () => {
 
   //handle google signIn
   const handleGoogleSignIn = async () => {
-  try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
 
-    const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
-    const userExists = existingUsers.some(
-      (u: RegisterProps) => u.email === user.email
-    );
+      const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
+      const userExists = existingUsers.some(
+        (u: RegisterProps) => u.email === user.email,
+      );
 
-    if (!userExists) {
-      const newUser = {
-        name: user.displayName || '',
-        email: user.email || '',
-        password: '',
-      };
-      localStorage.setItem('users', JSON.stringify([...existingUsers, newUser]));
+      if (!userExists) {
+        const newUser = {
+          name: user.displayName || '',
+          email: user.email || '',
+          password: '',
+        };
+        localStorage.setItem(
+          'users',
+          JSON.stringify([...existingUsers, newUser]),
+        );
+      }
+
+      navigate('/login');
+    } catch (error) {
+      console.error('Google sign-in error:', error);
     }
-
-    navigate('/login'); 
-  } catch (error) {
-    console.error('Google sign-in error:', error);
-  }
-};
+  };
 
   // form based registration
   const handleSubmit = (e: FormEvent) => {
@@ -122,12 +126,14 @@ const RegisterForm = () => {
         password: data.password,
       };
 
-      localStorage.setItem('users', JSON.stringify([...existingUsers, newUser]));
-      navigate('/login');
+      localStorage.setItem(
+        'users',
+        JSON.stringify([...existingUsers, newUser]),
+      );
+      setSuccess('Registered successful!');
+      setTimeout(()=>navigate('/login'), 1500);
     }
   };
-
-  
 
   return (
     <div className="register">
@@ -182,8 +188,12 @@ const RegisterForm = () => {
 
         <div className="or">or</div>
         {/* Sign in with google button */}
-        <Button label="Continue with Google" type="button" onClick={handleGoogleSignIn} />
-
+        <Button
+          label="Continue with Google"
+          type="button"
+          onClick={handleGoogleSignIn}
+        />
+        {success && <p className="success">{success}</p>}
       </div>
     </div>
   );

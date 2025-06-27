@@ -14,6 +14,7 @@ import User from './components/pages/User';
 import UserDetails from './components/pages/UserDetails';
 import Footer from './components/templates/Footer';
 import Header from './components/templates/Header';
+// import Sidebar from '../src/components/molecules/Sidebar';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
@@ -32,6 +33,7 @@ function App() {
     <div className="App">
       <Router>
         <Header />
+        <div className='main'>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LogInPage />} />
@@ -62,6 +64,7 @@ function App() {
             element={isLoggedIn ? <EditUser /> : <LogInPage />}
           />
         </Routes>
+        </div>
         <Footer />
       </Router>
     </div>

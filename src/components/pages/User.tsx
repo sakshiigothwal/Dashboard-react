@@ -46,7 +46,7 @@ const User = () => {
     <div className='user'>
       <Sidebar />
       <h2>User List</h2>
-      <div className='adduser'>
+      <div className='adduserbtn'>
         <Button label="Add User" onClick={() => navigate('/add-user')} />
       </div>
       {/* if user exist then display it in the talbe */}
