@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import Spinnersvg from '../../images/spinner.svg'
 import Button from '../atoms/Button';
 import Sidebar from '../molecules/Sidebar';
 
@@ -17,11 +18,18 @@ type UserProps ={
 const User = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState<UserProps[]>([]);
+   const [loading, setLoading] = useState<boolean>(false);
 
-  const fetchUsers = () => {
-    axios.get('https://685b7af589952852c2d9ab22.mockapi.io/api/users')
-      .then((res) => setUsers(res.data))
-      .catch((err) => console.error(err));
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get('https://685b7af589952852c2d9ab22.mockapi.io/api/users');
+      setUsers(res.data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -50,7 +58,11 @@ const User = () => {
         <Button label="Add User" onClick={() => navigate('/add-user')} />
       </div>
       {/* if user exist then display it in the talbe */}
-      {users.length > 0 ? (
+       {loading ? (
+        <div className="spinner-container">
+          <img src={Spinnersvg} alt="Loading..." className="spinner" />
+        </div>
+      ) : users.length > 0 ? (
         <table className="table">
           <thead>
             <tr>

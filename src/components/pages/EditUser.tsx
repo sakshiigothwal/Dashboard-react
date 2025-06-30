@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useRef, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import Spinnersvg from '../../images/spinner.svg';
 import '../../styles/EditUser.css';
 import Sidebar from '../molecules/Sidebar';
 
@@ -14,6 +15,7 @@ const EditUser = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [clicked, setClicked] = useState(false)
 
   useEffect(() => {
     if (nameRef.current) nameRef.current.value = name;
@@ -21,6 +23,9 @@ const EditUser = () => {
   }, [name, email]);
 
   const handleUpdate = async () => {
+    if (clicked) return;
+
+    setClicked(true);
     const updatedName = nameRef.current?.value;
     const updatedEmail = emailRef.current?.value;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -57,7 +62,13 @@ const EditUser = () => {
       <div className="edituser">
         <input ref={nameRef} placeholder="Name" />
         <input ref={emailRef} placeholder="Email" />
-        <button onClick={handleUpdate}>Update</button>
+        <button onClick={handleUpdate} disabled={clicked}>
+          {clicked ? (
+            <img src={Spinnersvg} alt="updating" width={40} height={40} />
+          ) : (
+            'Update'
+          )}
+        </button>
 
         {message && <p className="success-message">{message}</p>}
         {error && <p className="error-message">{error}</p>}
