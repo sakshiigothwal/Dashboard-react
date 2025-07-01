@@ -1,4 +1,63 @@
-.home{
-    padding: 2rem;
-    color: white;
+.dashboard {
+  display: flex;
+  flex-direction: row;
+  background-color: linear-gradient(to right, #17153B, #2E236C);
+}
+.container{
+  flex: 1;
+  padding: 24px 20px; 
+  margin-left: 210px; 
+  box-sizing: border-box;
+  min-height: calc(100vh - 64px);
+}
+
+.home {
+   background-color: #fff;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.welcome {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #17153B;
+  font-style: italic;
+}
+
+.cardbox {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.recent-blogs {
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 32px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.actions button {
+  background-color: #3f51b5;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.actions button:hover {
+  background-color: #303f9f;
 }
