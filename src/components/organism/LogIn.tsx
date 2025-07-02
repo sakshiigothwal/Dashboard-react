@@ -31,11 +31,30 @@ const LogIn = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    setError((prev) => ({ ...prev, [name]: '' })); //clear the error whenuser is typing
     setData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
+
+    setError((prev) => {
+      const newError = { ...prev };
+
+      if (name === 'email') {
+        if (!value) newError.email = 'Email is required';
+        else if (!/\S+@\S+\.\S+/.test(value))
+          newError.email = 'Email is invalid';
+        else newError.email = '';
+      }
+
+      if (name === 'password') {
+        if (!value) newError.password = 'Password is required';
+        else if (value.length < 8)
+          newError.password = 'Password has to be at least 8 characters';
+        else newError.password = '';
+      }
+
+      return newError;
+    });
   };
   //fuction to validate
   const validate = () => {
@@ -71,28 +90,29 @@ const LogIn = () => {
         const matchUser = existingUsers.find(
           // check if the email password matches to any saved user
           (props: LoginProps) =>
-            props.email.toLowerCase() === data.email.toLowerCase() &&
-            props.password === data.password,
+            props.email.toLowerCase() === data.email.toLowerCase(),
         );
 
-        if (matchUser) {
-          // if matches update login status
+        if (!matchUser) {
+          setError({
+            email: '',
+            password: '',
+          });
+          setInfo('No account found. Please Register.');
+          setSuccess('');
+        } else if (matchUser.password !== data.password) {
+          setError({
+            email: '',
+            password: 'Incorrect password',
+          });
+          setInfo('');
+          setSuccess('');
+        } else {
           setSuccess('Login successful!');
           setInfo('');
-
           localStorage.setItem('isLoggedIn', 'true');
           localStorage.setItem('currentUser', JSON.stringify(matchUser));
-
           setTimeout(() => navigate('/'), 1000);
-        } else {
-          //gives error message if user not matched
-          setError((prev) => ({
-            ...prev,
-            email: 'Invalid email or password',
-            password: 'Invalid email or password',
-          }));
-          setInfo('No account found, please register');
-          setSuccess('');
         }
       }
     }

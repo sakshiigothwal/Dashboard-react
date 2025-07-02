@@ -1,18 +1,19 @@
 .dashboard {
+  padding: 6rem 2rem 2rem 2rem;
   display: flex;
   flex-direction: row;
-  background-color: linear-gradient(to right, #17153B, #2E236C);
+  background-color: linear-gradient(to right, #17153b, #2e236c);
 }
-.container{
+.container {
   flex: 1;
-  padding: 24px 20px; 
-  margin-left: 210px; 
+  padding: 24px 20px;
+  margin-left: 210px;
   box-sizing: border-box;
   min-height: calc(100vh - 64px);
 }
 
 .home {
-   background-color: #fff;
+  background-color: #fff;
   border-radius: 20px;
   padding: 24px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -22,7 +23,7 @@
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 8px;
-  color: #17153B;
+  color: #17153b;
   font-style: italic;
 }
 

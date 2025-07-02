@@ -27,7 +27,7 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <h2 className="header">Dashboard</h2>
+      <h2 className="headernav">Dashboard</h2>
       <input
         type="text"
         placeholder="Search users or blogs"

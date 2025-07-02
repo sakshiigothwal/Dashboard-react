@@ -78,7 +78,8 @@ const RegisterForm = () => {
 
       const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
       const userExists = existingUsers.some(
-        (u: RegisterProps) => u.email === user.email,
+        (u: RegisterProps) =>
+          u.email.toLowerCase() === (user.email || '').toLowerCase(),
       );
 
       if (!userExists) {
@@ -108,7 +109,7 @@ const RegisterForm = () => {
 
       // Check if email is already registered
       const userExists = existingUsers.some(
-        (props: RegisterProps) => props.email === data.email,
+        (props: RegisterProps) => props.email.toLowerCase() === data.email.toLowerCase(),
       );
 
       if (userExists) {
@@ -131,7 +132,7 @@ const RegisterForm = () => {
         JSON.stringify([...existingUsers, newUser]),
       );
       setSuccess('Registered successful!');
-      setTimeout(()=>navigate('/login'), 1500);
+      setTimeout(() => navigate('/login'), 1500);
     }
   };
 
