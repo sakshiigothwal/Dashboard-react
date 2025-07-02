@@ -2,28 +2,32 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Spinnersvg from '../../images/spinner.svg'
+import Spinnersvg from '../../images/spinner.svg';
 import Button from '../atoms/Button';
+import Spinner from '../atoms/Spinner';
 import Sidebar from '../molecules/Sidebar';
 
 import '../../styles/User.css';
 
-type UserProps ={
-  key: number
-  id: number
-  name: string
-  email: string
-}
+type UserProps = {
+  key: number;
+  id: number;
+  name: string;
+  email: string;
+};
 
 const User = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState<UserProps[]>([]);
-   const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [deleting, setDeleting] = useState<number | null>(null);
 
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const res = await axios.get('https://685b7af589952852c2d9ab22.mockapi.io/api/users');
+      const res = await axios.get(
+        'https://685b7af589952852c2d9ab22.mockapi.io/api/users',
+      );
       setUsers(res.data);
     } catch (err) {
       console.error(err);
@@ -34,16 +38,21 @@ const User = () => {
 
   useEffect(() => {
     //fetch users from API
-    fetchUsers()
+    fetchUsers();
   }, []);
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: number) => {
+    setDeleting(id);
     try {
-      await axios.delete(`${'https://685b7af589952852c2d9ab22.mockapi.io/api/users'}/${id}`);
+      await axios.delete(
+        `${'https://685b7af589952852c2d9ab22.mockapi.io/api/users'}/${id}`,
+      );
       fetchUsers(); // refresh list
     } catch (error) {
       console.error('Error deleting user:', error);
-    }
+    }finally {
+    setDeleting(null);
+  }
   };
 
   const handleEdit = (user: UserProps) => {
@@ -51,14 +60,14 @@ const User = () => {
   };
 
   return (
-    <div className='user'>
+    <div className="user">
       <Sidebar />
       <h2>User List</h2>
-      <div className='adduserbtn'>
+      <div className="adduserbtn">
         <Button label="Add User" onClick={() => navigate('/add-user')} />
       </div>
       {/* if user exist then display it in the talbe */}
-       {loading ? (
+      {loading ? (
         <div className="spinner-container">
           <img src={Spinnersvg} alt="Loading..." className="spinner" />
         </div>
@@ -79,12 +88,15 @@ const User = () => {
                 <td>{index + 1}</td>
                 <td>{props.name}</td>
                 <td>{props.email}</td>
-                <td className='buttons'>
+                <td className="buttons">
                   <Button label="Edit" onClick={() => handleEdit(props)} />
-                  <Button label="Delete" onClick={() => handleDelete(props.id.toString())} />
+                  <Button
+                    label={deleting === props.id ? <Spinner /> : 'Delete'}
+                    onClick={() => handleDelete(props.id)}
+                    disabled={deleting === props.id}
+                  />
                 </td>
               </tr>
-              
             ))}
           </tbody>
         </table>

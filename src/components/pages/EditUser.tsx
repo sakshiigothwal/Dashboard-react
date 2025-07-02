@@ -2,9 +2,10 @@ import axios from 'axios';
 import React, { useRef, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import Spinnersvg from '../../images/spinner.svg';
+import Spinner from '../atoms/Spinner';
 import '../../styles/EditUser.css';
 import Sidebar from '../molecules/Sidebar';
+import '../../styles/Spinner.css';
 
 const EditUser = () => {
   const location = useLocation();
@@ -15,7 +16,7 @@ const EditUser = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const [clicked, setClicked] = useState(false)
+  const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
     if (nameRef.current) nameRef.current.value = name;
@@ -34,6 +35,7 @@ const EditUser = () => {
       if (!emailRegex.test(updatedEmail)) {
         setError('Invalid email.');
         setMessage('');
+        setClicked(false);
         return;
       }
       try {
@@ -45,12 +47,16 @@ const EditUser = () => {
           },
         );
         setMessage('User updated successfully!');
-        setError(' ')
-        setTimeout(() => navigate('/users'), 1000);
+        setError(' ');
+        setClicked(false);
+        setTimeout(() => {
+          navigate('/users');
+        }, 10);
       } catch (error) {
         console.error('Error updating user:', error);
         setError('error in updating user');
         setMessage('');
+        setClicked(false);
       }
     }
   };
@@ -59,12 +65,13 @@ const EditUser = () => {
     <div>
       <Sidebar />
       <h2>Edit User</h2>
+      <form onSubmit={handleUpdate}>
       <div className="edituser">
         <input ref={nameRef} placeholder="Name" />
         <input ref={emailRef} placeholder="Email" />
-        <button onClick={handleUpdate} disabled={clicked}>
+        <button onClick={handleUpdate} type='submit' disabled={clicked}>
           {clicked ? (
-            <img src={Spinnersvg} alt="updating" width={40} height={40} />
+            <Spinner/>
           ) : (
             'Update'
           )}
@@ -73,6 +80,7 @@ const EditUser = () => {
         {message && <p className="success-message">{message}</p>}
         {error && <p className="error-message">{error}</p>}
       </div>
+      </form>
     </div>
   );
 };
