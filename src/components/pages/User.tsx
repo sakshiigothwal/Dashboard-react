@@ -10,7 +10,6 @@ import Sidebar from '../molecules/Sidebar';
 import '../../styles/User.css';
 
 type UserProps = {
-  key: number;
   id: number;
   name: string;
   email: string;

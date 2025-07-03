@@ -19,10 +19,16 @@ const BlogList = () => {
     //fetches blog post from API
     axios
       .get('https://jsonplaceholder.typicode.com/posts')
-      .then((res) => setBlogs(res.data))//set fetced data in blog state
-      .catch((err) => console.error(err));// for an error
+      .then((res) => {
+        const trimmedData = res.data.map((post: Blog) => ({
+          title: post.title,
+          body: post.body,
+        }));
+        setBlogs(trimmedData);
+      }) //set fetced data in blog state
+      .catch((err) => console.error(err)); // for an error
   }, []);
-//filtering of blog element when searched
+  //filtering of blog element when searched
   const filterBlog = blogs.filter((blog) =>
     blog.title.includes(search.toLowerCase()),
   );
@@ -37,7 +43,7 @@ const BlogList = () => {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
-{/* if the length is 0 it shows no blogs else shows filtered blogs */}
+      {/* if the length is 0 it shows no blogs else shows filtered blogs */}
       {filterBlog.length > 0 ? (
         filterBlog.map((blog) => (
           <Cards title={blog.title} description={blog.body} />
