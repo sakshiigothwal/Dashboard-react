@@ -16,13 +16,15 @@ const AddUser = () => {
   const navigate = useNavigate();
   const [clicked, setClicked] = useState(false);
 
-  const handleAdd = async () => {
+  const handleAdd = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (clicked) return;
 
     setClicked(true);
     const name = nameRef.current?.value;
     const email = emailRef.current?.value;
-
+    setError('');
+    setMessage('');
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (name && email) {
       //if both the value is there
@@ -41,11 +43,12 @@ const AddUser = () => {
           },
         );
         setMessage('user added!');
-        setError(' ');
+        if (nameRef.current) nameRef.current.value = '';
+        if (emailRef.current) emailRef.current.value = '';
         setClicked(false);
         setTimeout(() => {
           navigate('/users');
-        }, 10);
+        }, 1500);
       } catch (error) {
         console.error('error adding user', error);
         setError('error in adding user');
@@ -66,7 +69,7 @@ const AddUser = () => {
         <div className="adduser">
           <input ref={nameRef} placeholder="Name" />
           <input ref={emailRef} placeholder="Email" />
-          <button onClick={handleAdd} type="submit" disabled={clicked}>
+          <button type="submit" disabled={clicked}>
             {clicked ? <Spinner /> : 'Add'}
           </button>
 

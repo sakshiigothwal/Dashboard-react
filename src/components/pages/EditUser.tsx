@@ -10,20 +10,23 @@ import '../../styles/Spinner.css';
 const EditUser = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { id, name, email } = location.state;
-
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [clicked, setClicked] = useState(false);
-
+  const userState = location.state;
   useEffect(() => {
-    if (nameRef.current) nameRef.current.value = name;
-    if (emailRef.current) emailRef.current.value = email;
-  }, [name, email]);
+    if (userState?.name && nameRef.current) {
+      nameRef.current.value = userState.name;
+    }
+    if (userState?.email && emailRef.current) {
+      emailRef.current.value = userState.email;
+    }
+  }, [userState]);
 
-  const handleUpdate = async () => {
+  const handleUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (clicked) return;
 
     setClicked(true);
@@ -40,7 +43,7 @@ const EditUser = () => {
       }
       try {
         await axios.put(
-          `https://685b7af589952852c2d9ab22.mockapi.io/api/users/${id}`,
+          `https://685b7af589952852c2d9ab22.mockapi.io/api/users/${userState.id}`,
           {
             name: updatedName,
             email: updatedEmail,
@@ -51,7 +54,7 @@ const EditUser = () => {
         setClicked(false);
         setTimeout(() => {
           navigate('/users');
-        }, 10);
+        }, 1500);
       } catch (error) {
         console.error('Error updating user:', error);
         setError('error in updating user');
@@ -69,7 +72,7 @@ const EditUser = () => {
         <div className="edituser">
           <input ref={nameRef} placeholder="Name" />
           <input ref={emailRef} placeholder="Email" />
-          <button onClick={handleUpdate} type="submit" disabled={clicked}>
+          <button type="submit" disabled={clicked}>
             {clicked ? <Spinner /> : 'Update'}
           </button>
 
