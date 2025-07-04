@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import Input from '../atoms/Input';
 import Cards from '../molecules/Cards';
-import Sidebar from '../molecules/Sidebar';
+import Sidebar from '../organism/Sidebar';
 
 import '../../styles/BlogList.css';
 type Blog = {

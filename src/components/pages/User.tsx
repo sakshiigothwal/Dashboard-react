@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Spinnersvg from '../../images/spinner.svg';
 import Button from '../atoms/Button';
 import Spinner from '../atoms/Spinner';
-import Sidebar from '../molecules/Sidebar';
+import Sidebar from '../organism/Sidebar';
 
 import '../../styles/User.css';
 
@@ -49,9 +49,9 @@ const User = () => {
       fetchUsers(); // refresh list
     } catch (error) {
       console.error('Error deleting user:', error);
-    }finally {
-    setDeleting(null);
-  }
+    } finally {
+      setDeleting(null);
+    }
   };
 
   const handleEdit = (user: UserProps) => {

@@ -3,7 +3,7 @@ import React from 'react';
 import '../../styles/HomePage.css';
 import Button from '../atoms/Button';
 import Cards from '../molecules/Cards';
-import Sidebar from '../molecules/Sidebar';
+import Sidebar from '../organism/Sidebar';
 
 const HomePage: React.FC = () => {
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'; //checks login status

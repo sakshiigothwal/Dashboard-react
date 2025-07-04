@@ -54,12 +54,26 @@ const RegisterForm = () => {
     }
 
     if (!data.password) {
-      newError.password = 'Password is required';
-      isValid = false;
-    } else if (data.password.length < 8) {
+    newError.password = 'Password is required';
+    isValid = false;
+  } else {
+    if (data.password.length < 8) {
       newError.password = 'Password must be at least 8 characters';
       isValid = false;
+    } else if (!/[A-Z]/.test(data.password)) {
+      newError.password = 'Must contain at least one uppercase letter';
+      isValid = false;
+    } else if (!/[a-z]/.test(data.password)) {
+      newError.password = 'Must contain at least one lowercase letter';
+      isValid = false;
+    } else if (!/\d/.test(data.password)) {
+      newError.password = 'Must contain at least one digit';
+      isValid = false;
+    } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(data.password)) {
+      newError.password = 'Must contain at least one special character';
+      isValid = false;
     }
+  }
 
     if (data.confirmPassword !== data.password) {
       newError.confirmPassword = 'Passwords do not match';

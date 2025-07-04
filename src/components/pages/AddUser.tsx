@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Spinner from '../atoms/Spinner';
-import Sidebar from '../molecules/Sidebar';
+import Sidebar from '../organism/Sidebar';
 import '../../styles/AddUsers.css';
 import '../../styles/Spinner.css';
 

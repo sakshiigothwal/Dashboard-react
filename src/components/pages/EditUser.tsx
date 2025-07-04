@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import Spinner from '../atoms/Spinner';
 import '../../styles/EditUser.css';
-import Sidebar from '../molecules/Sidebar';
+import Sidebar from '../organism/Sidebar';
 import '../../styles/Spinner.css';
 
 const EditUser = () => {
@@ -66,20 +66,16 @@ const EditUser = () => {
       <Sidebar />
       <h2>Edit User</h2>
       <form onSubmit={handleUpdate}>
-      <div className="edituser">
-        <input ref={nameRef} placeholder="Name" />
-        <input ref={emailRef} placeholder="Email" />
-        <button onClick={handleUpdate} type='submit' disabled={clicked}>
-          {clicked ? (
-            <Spinner/>
-          ) : (
-            'Update'
-          )}
-        </button>
+        <div className="edituser">
+          <input ref={nameRef} placeholder="Name" />
+          <input ref={emailRef} placeholder="Email" />
+          <button onClick={handleUpdate} type="submit" disabled={clicked}>
+            {clicked ? <Spinner /> : 'Update'}
+          </button>
 
-        {message && <p className="success-message">{message}</p>}
-        {error && <p className="error-message">{error}</p>}
-      </div>
+          {message && <p className="success-message">{message}</p>}
+          {error && <p className="error-message">{error}</p>}
+        </div>
       </form>
     </div>
   );
